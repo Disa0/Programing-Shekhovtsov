@@ -13,6 +13,9 @@ const char *get_animal_type_name(enum animal_type type)
 {
 	const char *result;
 	switch (type) {
+	case HUMAN:
+		result = "Человек";
+		break;
 	case LIZARD:
 		result = "Ящерица";
 		break;
