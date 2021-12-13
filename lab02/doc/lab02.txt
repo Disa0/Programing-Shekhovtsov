@@ -1,0 +1,49 @@
+Лабораторная робота №2. Вступ до програмування. Основи debug процессу
+Шеховцов Дмитрий Витальевич
+Завдання:Установка среды для дальнейрей работы по дисциплине “Программирование”
+Основная часть:
+1)Зарегестрировался на платформе github и создал свой репо.
+2)Склонировался с данного репозитория с помощью команды git clone
+3)Создал внутри склонированного репозитория директорию lab02 и lab01 с помощью команд mkdir lab02 and mkdir lab01 Скопировал следующие файлы с помощью команды cp and cp -r • .clang-format • .clang-tidy • .gitlab-ci.yml • lab00/Doxyfile >
+4)Создал  пустой файл .gitignоre с помощью команды touch .gitignore.С помощью команды nano .gitignore добавил каталог dist.Проиндексировал файлы с помощью команды git add. и зафиксировал изменения с помощью команды git commit -m
+5)Добавил строчки кода в файлы lib.c and lib.h таким образом:
+cd lab02/src
+nano lib.c
+ case HUMAN:
+                result = "Человек";
+                break;
+nano lib.h
+ HUMAN,/**< Человек */
+cd ..
+nano test/test.c
+enum animal_type input_data[] = { HUMAN, LIZARD, DOG, COW, PIG, ANIMAL_>
+        char *expected_values[] = { "Человек", "Ящерица", "Собака", "Корова", ">
+
+6)Открыл в отладчике файл main.bin поставил breakpoint на 48 строке
+lldb main.bin
+l 1
+l
+l
+l
+breakpoint set -l 48
+r
+p animals
+Значения animals у меня получились такие:[0] = (type = DOG, height = 68, weight = 80)
+[0] = (type = PIG, height = 84, weight = 112)
+  [0] = (type = HUMAN, height = 56, weight = 16)
+  [1] = (type = HUMAN, height = 99, weight = 5)
+  [2] = (type = PIG, height = 64, weight = 114)
+  [3] = (type = COW, height = 95, weight = 99)
+  [4] = (type = HUMAN, height = 123, weight = 19)
+  [5] = (type = DOG, height = 118, weight = 108)
+  [6] = (type = COW, height = 21, weight = 13)
+  [7] = (type = LIZARD, height = 79, weight = 57)
+  [8] = (type = DOG, height = 16, weight = 47)
+  [9] = (type = DOG, height = 73, weight = 83)
+7)Создал файл для отчётов первой и второй лаб с помощью команд:
+mkdir lab01/doc
+touch lab01.txt
+mkdir lab02/doc
+touch lab02.txt
+Зафиксировал изменения с помощью команды git commit
+Отправил изменения на репозиторий с помощью команды git push
