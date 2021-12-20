@@ -1,0 +1,103 @@
+Лабораторная робота №6. Масиви
+Шеховцов Дмитрий Витальевич
+Завдання:Відсортувати масив цілих чисел методом “бульбашки” за зростанням або зменшенням
+залежно від прапору
+Основная часть:
+1)Для начала работы с лабораторной копировал Makefile с прошлой лабораторной 
+
+2)Создаём папки doc и src(mkdir doc и mkdir src). 
+nano src/main.c Этой командой мы создаём файл "main.c"  и переходим к его редактированию
+
+3)Создаём точку входа int main(){}
+
+4)Вводим переменные:
+#define N 5
+	int vr; //Временная переменная
+	//const int N = 5; //Количество элементов в массиве
+	int mas[N] = {7,5,3,6,4}; //Ввод элементов массива
+	
+5)Пишу первый цикл for для первичного прохода сравнений 
+for(int j = 0; j < N; j++) //Первичный проход сравнений
+	{
+		if (mas[j] > mas[j+1])
+		{
+			vr = mas[j];
+			mas[j] = mas[j+1];
+			mas[j+1] = vr;
+		}
+	}	
+
+6)Пишу второй цикл в цикле для дальнейших 4х проходов сравнений:
+for(int j = 0; j < N-1; j++) 
+	{
+		if (mas[j] > mas[j+1])
+		{
+			vr = mas[j];
+			mas[j] = mas[j+1];
+			mas[j+1] = vr;
+		}
+	
+	}
+
+7)Выходим в папку lab06,компилируем с помощью make all:
+disa@disa-TM1703:~/Desktop/labs/programing-SHEKHOVTSOV/lab06$ make all
+rm -rf dist
+mkdir dist
+gcc -std=gnu11 -g -Wall -Wextra -Wformat-security -Wfloat-equal -Wshadow -Wconversion -Wlogical-not-parentheses -Wnull-dereference -I./src src/main.c -o ./dist/main.bin
+./dist/main.bin
+
+8)Запускаю dist/main.bin через отладчик,показываю код,ставлю точку останова:
+disa@disa-TM1703:~/Desktop/labs/programing-SHEKHOVTSOV/lab06/dist$ lldb main.bin 
+(lldb) target create "main.bin"
+Current executable set to '/home/disa/Desktop/labs/programing-SHEKHOVTSOV/lab06/dist/main.bin' (x86_64).
+(lldb) l 1
+   1   	int main(void)
+   2   	{
+   3   	#define N 5
+   4   		int vr; //Временная переменная
+   5   		//const int N = 5; //Количество элементов в массиве
+   6   		int mas[N] = {7,5,3,6,4}; //Ввод элементов массива
+   7   		for(int j = 0; j < N; j++) //Первичный проход сравнений
+   8   		{
+   9   			if (mas[j] > mas[j+1])
+   10  			{
+(lldb) l
+   11  				vr = mas[j];
+   12  				mas[j] = mas[j+1];
+   13  				mas[j+1] = vr;
+   14  			}
+   15  		}	
+   16  		for( int i = 0;i < N-1;i++) // Повторение сравнения ещё 4 раза
+   17  		{
+   18  			
+   19  		for(int j = 0; j < N-1; j++) 
+   20  		{
+(lldb) l
+   21  			if (mas[j] > mas[j+1])
+   22  			{
+   23  				vr = mas[j];
+   24  				mas[j] = mas[j+1];
+   25  				mas[j+1] = vr;
+   26  			}
+   27  		
+   28  		}
+   29  	}
+   30  	return 0;
+(lldb) b 30
+Breakpoint 1: where = main.bin`main + 265 at main.c:30:8, address = 0x0000000000001252
+
+9)Выводим отсортированный массив:
+(lldb) r
+Process 8513 launched: '/home/disa/Desktop/labs/programing-SHEKHOVTSOV/lab06/dist/main.bin' (x86_64)
+Process 8513 stopped
+* thread #1, name = 'main.bin', stop reason = breakpoint 1.1
+    frame #0: 0x0000555555555252 main.bin`main at main.c:30:8
+   27  		
+   28  		}
+   29  	}
+-> 30  	return 0;
+   31  	}
+(lldb) p mas 
+(int [5]) $0 = ([0] = 3, [1] = 4, [2] = 5, [3] = 6, [4] = 7)
+
+

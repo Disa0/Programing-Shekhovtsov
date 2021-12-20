@@ -1,0 +1,88 @@
+Лабораторная робота №3. Розробка лінійних програм
+Шеховцов Дмитрий Витальевич
+Завдання:Температура задана у градусах за Цельсієм. Перевести температуру у градуси за
+Фаренгейтом і навпаки – температуру у градусах за Фаренгейтом – у температуру у
+градусах за Цельсієм
+Основная часть:
+1)Для начала работы с лабораторной копировал Makefile с прошлой лабораторной 
+и выполнил его модификацию:
+удаляю вторую строку,которая отвечает за запуск файлов lib.c,lib.h
+
+2)Создаём папки doc и src(mkdir doc и mkdir src). 
+nano src/main.c Этой командой мы создаём файл "main.c"  и переходим к его редактированию
+
+3)Для начала вводми переменные:
+int main(){
+	float c=2;// Ввод переменной "Градусы цельсия"
+	float f=50;// Ввод переменной "Градусы Фаренгейт"
+	float celsius;//Введение итоговой переменной для вывода результата перевода градусов фаренгейт в цельсии
+	float fahrenheit;//Введение итоговой переменной для вывода результата перевода градусов цельсия в фаренгейты
+   return 0;
+}
+Точкой входа является функция int main(). 
+Точка входа - адресс в оперативной памяти,с которого начинается выполнение программы.
+
+4) Теперь вводпим формулы,по которым программа будет считать градусы:
+int main(){
+	float c=2;// Ввод переменной "Градусы цельсия"
+	float f=50;// Ввод переменной "Градусы Фаренгейт"
+	float celsius;//Введение итоговой переменной для вывода результата перевода градусов фаренгейт в цельсии
+	float fahrenheit;//Введение итоговой переменной для вывода результата перевода градусов цельсия в фаренгейты
+	fahrenheit=(c*9/5)+32;//Формула перевода градусов цельсия в фаренгейты
+	celsius=(f-32)*5/9;//Формула перевода градусов фаренгейт в цельсии
+
+
+   return 0;
+}
+
+5) Компилируем работу командой make all
+disa@disa-TM1703:~/Desktop/labs/programing-SHEKHOVTSOV/lab03$ make all
+rm -rf dist
+mkdir dist
+gcc -std=gnu11 -g -Wall -Wextra -Wformat-security -Wfloat-equal -Wshadow -Wconversion -Wlogical-not-parentheses -Wnull-dereference -I./src src/main.c -o ./dist/main.bin
+src/main.c: In function ‘main’:
+src/main.c:5:8: warning: variable ‘fahrenheit’ set but not used [-Wunused-but-set-variable]
+    5 |  float fahrenheit;//Введение итоговой переменной для вывода результата перевода градусов цельсия в фаренгейты
+      |        ^~~~~~~~~~
+src/main.c:4:8: warning: variable ‘celsius’ set but not used [-Wunused-but-set-variable]
+    4 |  float celsius;//Введение итоговой переменной для вывода результата перевода градусов фаренгейт в цельсии
+      |        ^~~~~~~
+./dist/main.bin
+disa@disa-TM1703:~/Desktop/labs/programing-SHEKHOVTSOV/lab03$ 
+
+6)Создаётся директория dist с бинарным файлом main.bin
+
+7)Запускаем бинарный файл с отладчиком 
+disa@disa-TM1703:~/Desktop/labs/programing-SHEKHOVTSOV/lab03/dist$ lldb main.bin 
+(lldb) target create "main.bin"
+Current executable set to '/home/disa/Desktop/labs/programing-SHEKHOVTSOV/lab03/dist/main.bin' (x86_64).
+
+8)Открываем код программы и ставим точку остановы на 10 строчке:
+(lldb) l 1
+   1   	int main(){
+   2   		float c=2;// Ввод переменной "Градусы цельсия"
+   3   		float f=50;// Ввод переменной "Градусы Фаренгейт"
+   4   		float celsius;//Введение итоговой переменной для вывода результата перевода градусов фаренгейт в цельсии
+   5   		float fahrenheit;//Введение итоговой переменной для вывода результата перевода градусов цельсия в фаренгейты
+   6   		fahrenheit=(c*9/5)+32;//Формула перевода градусов цельсия в фаренгейты
+   7   		celsius=(f-32)*5/9;//Формула перевода градусов фаренгейт в цельсии
+   8   	
+   9   	
+   10  	   return 0;
+(lldb) b 10
+Breakpoint 1: where = main.bin`main + 132 at main.c:10:11, address = 0x00000000000011ad
+
+9)Запускаем код и с помощью оператора "p" выводим ршение:
+(lldb) r
+Process 18053 launched: '/home/disa/Desktop/labs/programing-SHEKHOVTSOV/lab03/dist/main.bin' (x86_64)
+Process 18053 stopped
+* thread #1, name = 'main.bin', stop reason = breakpoint 1.1
+    frame #0: 0x00005555555551ad main.bin`main at main.c:10:11
+   7   		celsius=(f-32)*5/9;//Формула перевода градусов фаренгейт в цельсии
+   8   	
+   9   	
+-> 10  	   return 0;
+   11  	}
+(lldb) p celsius 
+(float) $0 = 10
+
